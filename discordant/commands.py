@@ -41,6 +41,47 @@ async def _youtube_search(self, args, message):
                                 json['items'][0]['id']['videoId'])
 
 
+@Discordant.register_command('recall')
+async def _recall(self, args, message):
+    global _memos
+    if args not in _memos:
+        await self.send_message(message.channel,
+                                'Nothing currently remembered for', args + '.')
+        return
+
+    await self.send_message(message.channel, _memos[args])
+
+
+_memos = {}
+
+
+@Discordant.register_command('remember')
+async def _remember(self, args, message):
+    global _memos
+
+    key, *memo = args.split()
+    if len(memo) == 0:
+        if key in _memos:
+            del _memos[key]
+            await self.send_message(message.channel, 'Forgot ' + key + '.')
+        else:
+            await self.send_message(message.channel,
+                                    'Nothing given to remember.')
+        return
+
+    memo = args[len(key):].strip()
+    _memos[key] = memo
+    await self.send_message(
+        message.channel,
+        "Remembered message '{}' for key '{}'.".format(memo, key))
+
+
+@Discordant.register_command('sleep')
+async def _sleep(self, args, message):
+    await asyncio.sleep(5)
+    await self.send_message(message.channel, 'done sleeping')
+
+
 @Discordant.register_command('urban')
 async def _urban_dictionary_search(self, args, message):
     # this entire function is an egregious violation of the DRY
@@ -73,42 +114,6 @@ async def _urban_dictionary_search(self, args, message):
         await self.send_message(message.channel, reply)
 
 
-_memos = {}
-
-
-@Discordant.register_command('remember')
-async def _remember(self, args, message):
-    global _memos
-
-    key, *memo = args.split()
-    if len(memo) == 0:
-        if key in _memos:
-            del _memos[key]
-            await self.send_message(message.channel, 'Forgot ' + key + '.')
-        else:
-            await self.send_message(message.channel,
-                                    'Nothing given to remember.')
-        return
-
-    memo = args[len(key):].strip()
-    _memos[key] = memo
-    await self.send_message(
-        message.channel,
-        "Remembered message '{}' for key '{}'.".format(memo, key))
-
-
-@Discordant.register_command('recall')
-async def _recall(self, args, message):
-    global _memos
-    if args not in _memos:
-        await self.send_message(message.channel,
-                                'Nothing currently remembered for', args + '.')
-        return
-
-    await self.send_message(message.channel, _memos[args])
-
-
-@Discordant.register_command('sleep')
-async def _sleep(self, args, message):
-    await asyncio.sleep(5)
-    await self.send_message(message.channel, 'done sleeping')
+@Discordant.register_handler('jisho')
+async def _jisho_search(self, args, message):
+    pass

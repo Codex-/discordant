@@ -20,15 +20,14 @@ class Discordant(discord.Client):
     def __init__(self, config_file='config.ini'):
         super().__init__()
 
-        self.__email = ''  # prevent a conflict with discord.Client#email
-        self._password = ''
+        self.token = ''
         self.command_char = ''
         self.config = ConfigParser()
 
         self.load_config(config_file)
 
     def run(self):
-        super().run(self.__email, self._password)
+        super().run(self.token)
 
     def load_config(self, config_file):
         if not path.exists(config_file):
@@ -38,8 +37,7 @@ class Discordant(discord.Client):
             sys.exit(-1)
 
         self.config.read(config_file)
-        self.__email = self.config.get('Login', 'email')
-        self._password = self.config.get('Login', 'password')
+        self.token = self.config.get('Login', 'token')
         self.command_char = self.config.get('Commands', 'command_char')
         self.load_aliases()
 
