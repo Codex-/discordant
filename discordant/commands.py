@@ -114,6 +114,6 @@ async def _urban_dictionary_search(self, args, message):
         await self.send_message(message.channel, reply)
 
 
-@Discordant.register_handler('jisho')
+@Discordant.register_command('jisho')
 async def _jisho_search(self, args, message):
     pass

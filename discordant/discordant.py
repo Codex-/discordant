@@ -1,5 +1,4 @@
 import discord
-import asyncio
 from collections import namedtuple
 from configparser import ConfigParser
 from inspect import iscoroutinefunction
@@ -25,19 +24,12 @@ class Discordant(discord.Client):
         self.command_char = ''
         self.config = ConfigParser()
 
+        self.app_info = None
+
         self.load_config(config_file)
 
-    # def run(self):
-    #     super().run(self.token)
-
-    # @asyncio.coroutine
     def run(self):
-        # super().start(self.token)
-        # super().connect()
-        # super().login(self.token)
-        # super().loop.run_until_complete()
-        self.loop.run_until_complete(super().start(self.token))
-        print("fail2")
+        super().run(self.token)
 
     def load_config(self, config_file):
         if not path.exists(config_file):
@@ -72,6 +64,16 @@ class Discordant(discord.Client):
             if match is not None:
                 await getattr(self, handler_name)(match, message)
             # do we return after the first match? or allow multiple matches
+
+    async def on_ready(self):
+        self.app_info = await self.application_info()
+        if len(self.servers) == 0:
+            print("Not currently associated with any servers")
+            print("Bots cannot accept server invitations")
+            print("Follow: https://discordapp.com/oauth2/authorize?"
+                  "client_id=" + self.app_info.id + "&scope=bot")
+        else:
+            print(self.servers)
 
     async def run_command(self, message):
         cmd_name, *args = message.content.split(' ')
