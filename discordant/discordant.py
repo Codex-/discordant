@@ -1,4 +1,5 @@
 import discord
+import asyncio
 from collections import namedtuple
 from configparser import ConfigParser
 from inspect import iscoroutinefunction
@@ -26,8 +27,17 @@ class Discordant(discord.Client):
 
         self.load_config(config_file)
 
+    # def run(self):
+    #     super().run(self.token)
+
+    # @asyncio.coroutine
     def run(self):
-        super().run(self.token)
+        # super().start(self.token)
+        # super().connect()
+        # super().login(self.token)
+        # super().loop.run_until_complete()
+        self.loop.run_until_complete(super().start(self.token))
+        print("fail2")
 
     def load_config(self, config_file):
         if not path.exists(config_file):
