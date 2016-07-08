@@ -20,16 +20,14 @@ class Discordant(discord.Client):
     def __init__(self, config_file='config.ini'):
         super().__init__()
 
-        self.token = ''
+        self._token = ''
         self.command_char = ''
         self.config = ConfigParser()
-
-        self.app_info = None
 
         self.load_config(config_file)
 
     def run(self):
-        super().run(self.token)
+        super().run(self._token)
 
     def load_config(self, config_file):
         if not path.exists(config_file):
@@ -39,7 +37,7 @@ class Discordant(discord.Client):
             sys.exit(-1)
 
         self.config.read(config_file)
-        self.token = self.config.get('Login', 'token')
+        self._token = self.config.get('Login', 'token')
         self.command_char = self.config.get('Commands', 'command_char')
         self.load_aliases()
 
@@ -66,12 +64,12 @@ class Discordant(discord.Client):
             # do we return after the first match? or allow multiple matches
 
     async def on_ready(self):
-        self.app_info = await self.application_info()
         if len(self.servers) == 0:
+            app_info = await self.application_info()
             print("Not currently associated with any servers")
             print("Bots cannot accept server invitations")
             print("Follow: https://discordapp.com/oauth2/authorize?"
-                  "client_id=" + self.app_info.id + "&scope=bot")
+                  "client_id=" + app_info.id + "&scope=bot")
         else:
             print(self.servers)
 
