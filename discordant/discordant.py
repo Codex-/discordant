@@ -71,6 +71,7 @@ class Discordant(discord.Client):
             print("Follow: https://discordapp.com/oauth2/authorize?"
                   "client_id=" + app_info.id + "&scope=bot")
         else:
+            # Todo do we care?
             print(self.servers)
 
     async def run_command(self, message):

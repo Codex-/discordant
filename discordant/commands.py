@@ -116,3 +116,11 @@ async def _sleep(self, args, message):
 @Discordant.register_command('jisho')
 async def _jisho_search(self, args, message):
     pass
+
+@Discordant.register_command('join')
+async def _join(self, args, message):
+    app_info = await self.application_info()
+    join_string = "A server admin must add this bot to their server!\n" \
+                  "Follow: <https://discordapp.com/oauth2/authorize?"\
+                  "client_id=" + app_info.id + "&scope=bot>"
+    await self.send_message(message.channel, join_string)
