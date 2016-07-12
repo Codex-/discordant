@@ -124,3 +124,7 @@ async def _join(self, args, message):
                   "Follow: <https://discordapp.com/oauth2/authorize?"\
                   "client_id=" + app_info.id + "&scope=bot>"
     await self.send_message(message.channel, join_string)
+
+@Discordant.register_command('lenny')
+async def _lenny(self, args, message):
+    await self.send_message(message.channel, '( ͡° ͜ʖ ͡°)')
