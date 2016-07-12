@@ -53,7 +53,9 @@ class Discordant(discord.Client):
 
     async def on_message(self, message):
         # TODO: logging
-        if message.content[0] == self.command_char:
+        # if message.content[0] == self.command_char:
+
+        if message.content.startswith(self.command_char):
             await self.run_command(message)
             return
 
