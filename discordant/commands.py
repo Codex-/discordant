@@ -128,3 +128,15 @@ async def _join(self, args, message):
 @Discordant.register_command('lenny')
 async def _lenny(self, args, message):
     await self.send_message(message.channel, '( ͡° ͜ʖ ͡°)')
+
+@Discordant.register_command('poop')
+async def _poop(self, args, message):
+    cat_poop = ".                                        /￣￣￣＼\n　　　　　　" \
+               " 　　/|　　 　　 ｜\n　　　　　 　　/　| 　 | ∩　 　＼\n　　　　 　　∫" \
+               "　     |      | | | ＼　　 ￣￣＼ ∧　 ∧　     ／￣￣￣￣￣￣￣￣￣￣" \
+               "￣￣￣￣|\n　　　　　　　 　 | / 　| |　　＼＿＿ 　(　´ ∀｀)   <　POO" \
+               "P UPLOAD COMPLETE          )\n　　　　　　　　 / / 　| |　　　　　" \
+               " /　/ / /　　　＼＿＿＿＿＿＿＿＿＿＿＿＿＿＿|\n　　　　　 　　 / /　　" \
+               "| | 　　　　（ （ / /\n　　　          　 / /　　　| | 　　　　    " \
+               " ＼＼\n　       　:poop:      U　　       U 　　　         ⊂ / ∪"
+    await self.send_message(message.channel, cat_poop)
