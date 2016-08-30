@@ -140,3 +140,13 @@ async def _poop(self, args, message):
                "| | 　　　　（ （ / /\n　　　          　 / /　　　| | 　　　　    " \
                " ＼＼\n　       　:poop:      U　　       U 　　　         ⊂ / ∪"
     await self.send_message(message.channel, cat_poop)
+
+@Discordant.register_command('gs')
+async def _goodshit(self, args, message):
+    goodshit = "👌👀👌👀👌👀👌👀👌👀 good shit go౦ԁ sHit👌 thats ✔ some good👌👌shi" \
+               "t right👌👌there👌👌👌 right✔there ✔✔if i do ƽaү so my self 💯 i" \
+               " say so 💯 thats what im talking about right there right ther" \
+               "e (chorus: ʳᶦᵍʰᵗ ᵗʰᵉʳᵉ) mMMMMᎷМ💯 👌👌 👌НO0ОଠOOOOOОଠଠOoooᵒᵒᵒ" \
+               "ᵒᵒᵒᵒᵒᵒ👌 👌👌 👌 💯 👌 👀 👀 👀 👌👌Good shit"
+
+    await self.send_message(message.channel, goodshit)
