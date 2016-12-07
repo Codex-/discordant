@@ -2,6 +2,7 @@ import discord
 from collections import namedtuple
 from configparser import ConfigParser
 from inspect import iscoroutinefunction
+import logging
 from os import path
 import sys
 import re
@@ -25,6 +26,8 @@ class Discordant(discord.Client):
         self.config = ConfigParser()
 
         self.load_config(config_file)
+
+        self._logger = logging.getLogger(__name__)
 
     def run(self):
         super().run(self._token)
@@ -73,8 +76,11 @@ class Discordant(discord.Client):
             print("Follow: https://discordapp.com/oauth2/authorize?"
                   "client_id=" + app_info.id + "&scope=bot")
         else:
-            # Todo do we care?
-            print(self.servers)
+            servers = ", ".join(["'{}'".format(server.name)
+                                 for server in self.servers])
+            self._logger.log(logging.INFO,
+                             "Connected to {0} server(s): {1}."
+                             .format(len(self.servers), servers))
 
     async def run_command(self, message):
         cmd_name, *args = message.content.split(' ')
