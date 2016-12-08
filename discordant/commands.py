@@ -37,8 +37,10 @@ async def _youtube_search(self, args, message):
     if json['pageInfo']['totalResults'] == 0:
         await self.send_message(message.channel, 'No results found.')
     else:
-        await self.send_message(message.channel, 'https://youtu.be/' +
-                                json['items'][0]['id']['videoId'])
+        video_name = json['items'][0]['snippet']['title']
+        video_url = 'https://youtu.be/' + json['items'][0]['id']['videoId']
+        await self.send_message(message.channel, '**{0}:**\n{1}'
+                                .format(video_name, video_url))
 
 
 @Discordant.register_command('urban')
