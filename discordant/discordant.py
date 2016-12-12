@@ -76,11 +76,21 @@ class Discordant(discord.Client):
             print("Follow: https://discordapp.com/oauth2/authorize?"
                   "client_id=" + app_info.id + "&scope=bot")
         else:
-            servers = ", ".join(["'{}'".format(server.name)
+            servers = ", ".join(["'{0}: {1}'".format(server.name, server.id)
                                  for server in self.servers])
             self._logger.log(logging.INFO,
                              "Connected to {0} server(s): {1}."
                              .format(len(self.servers), servers))
+
+    async def on_server_join(self, server):
+        server = "'{0}: {1}'".format(server.name, server.id)
+        self._logger.log(logging.INFO,
+                         "Authorised to join: " + server)
+
+    async def on_server_remove(self, server):
+        server = "'{0}: {1}'".format(server.name, server.id)
+        self._logger.log(logging.INFO,
+                         "Removed from: " + server)
 
     async def run_command(self, message):
         cmd_name, *args = message.content.split(' ')
