@@ -55,16 +55,27 @@ class Discordant(discord.Client):
                 self._commands[cmd_name].aliases.append(alias)
 
     async def on_message(self, message):
-        # TODO: logging
         if len(message.content) == 0:
             return
         if message.content[0] == self.command_char:
+            log_command = "User: '{0}: {1}', Command: '{2}'".format(
+                message.author.name,
+                message.author.id,
+                message.content[1:])
+
+            self._logger.log(logging.INFO, log_command)
             await self.run_command(message)
             return
 
         for handler_name, trigger in self._handlers.items():
             match = trigger.search(message.content)
             if match is not None:
+                log_match = "User: '{0}: {1}', Matched: '{2}'".format(
+                    message.author.name,
+                    message.author.id,
+                    message.content)
+
+                self._logger.log(logging.INFO, log_match)
                 await getattr(self, handler_name)(match, message)
             # do we return after the first match? or allow multiple matches
 
@@ -83,14 +94,14 @@ class Discordant(discord.Client):
                              .format(len(self.servers), servers))
 
     async def on_server_join(self, server):
-        server = "'{0}: {1}'".format(server.name, server.id)
+        log_server = "'{0}: {1}'".format(server.name, server.id)
         self._logger.log(logging.INFO,
-                         "Authorised to join: " + server)
+                         "Authorised to join: " + log_server)
 
     async def on_server_remove(self, server):
-        server = "'{0}: {1}'".format(server.name, server.id)
+        log_server = "'{0}: {1}'".format(server.name, server.id)
         self._logger.log(logging.INFO,
-                         "Removed from: " + server)
+                         "Removed from: " + log_server)
 
     async def run_command(self, message):
         cmd_name, *args = message.content.split(' ')
@@ -101,6 +112,13 @@ class Discordant(discord.Client):
             cmd = self._commands[self._aliases[cmd_name]]
             args = cmd.arg_func(args)
             await getattr(self, cmd.name)(args, message)
+        else:
+            log_bad_command = ("Invalid command used: User: '{0}: {1}', "
+                               "Command: '{2}'").format(
+                message.author.name,
+                message.author.id,
+                cmd_name)
+            self._logger.log(logging.WARNING, log_bad_command)
 
     @classmethod
     def register_handler(cls, trigger, regex_flags=0):
