@@ -118,7 +118,7 @@ class Discordant(discord.Client):
                 message.author.name,
                 message.author.id,
                 cmd_name)
-            self._logger.log(logging.WARNING, log_bad_command)
+            self._logger.log(logging.DEBUG, log_bad_command)
 
     @classmethod
     def register_handler(cls, trigger, regex_flags=0):
