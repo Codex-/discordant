@@ -1,4 +1,6 @@
 from .discordant import Discordant
+from discord.embeds import Embed
+from discord.colour import Colour
 import re
 import requests
 from functools import partial
@@ -63,7 +65,8 @@ async def _urban_dictionary_search(self, args, message):
 
     json = res.json()
     if json['result_type'] == 'no_results':
-        await self.send_message(message.channel, 'No results found.')
+        await self.send_message(message.channel,
+                                'No results found for "{}".'.format(args))
     else:
         entry = json['list'][0]
         definition = re.sub(r'\[(\w+)\]', '\\1', entry['definition'])
@@ -75,10 +78,16 @@ async def _urban_dictionary_search(self, args, message):
             reply += 'See more at <{}>)'.format(entry['permalink'])
         reply += '\n\n{} :+1: :black_small_square: {} :-1:'.format(
             entry['thumbs_up'], entry['thumbs_down'])
-        reply += '\n\nSee more results at <{}>'.format(
-            re.sub(r'/\d*$', '', entry['permalink']))
 
-        await self.send_message(message.channel, reply)
+        result = Embed(
+            title=args,
+            type='rich',
+            description=reply,
+            url=entry['permalink'],
+            colour=Colour.green(),
+        )
+
+        await self.send_message(message.channel, embed=result)
 
 
 _memos = {}
