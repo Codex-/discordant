@@ -53,8 +53,6 @@ async def _youtube_search(self, args, message):
 
 @Discordant.register_command('urban')
 async def _urban_dictionary_search(self, args, message):
-    # this entire function is an egregious violation of the DRY
-    # principle, so TODO: abstract out the request part of these functions
     base_req_url = 'http://api.urbandictionary.com/v0/define'
 
     res = await perform_async(requests.get, base_req_url, {'term': args})
@@ -124,16 +122,6 @@ async def _recall(self, args, message):
 
     await self.send_message(message.channel, _memos[args])
 
-
-@Discordant.register_command('sleep')
-async def _sleep(self, args, message):
-    await asyncio.sleep(5)
-    await self.send_message(message.channel, 'done sleeping')
-
-@Discordant.register_command('jisho')
-async def _jisho_search(self, args, message):
-    pass
-
 @Discordant.register_command('join')
 async def _join(self, args, message):
     app_info = await self.application_info()
@@ -141,6 +129,14 @@ async def _join(self, args, message):
                   "Follow: <https://discordapp.com/oauth2/authorize?"\
                   "client_id=" + app_info.id + "&scope=bot>"
     await self.send_message(message.channel, join_string)
+
+@Discordant.register_command('resetname')
+async def _reset(self, args, message):
+
+    app_info = await self.application_info()
+    # member = message.server.get_member(app_info.id)
+    # print(type(app_info))
+    await self.change_nickname(message, '')
 
 @Discordant.register_command('lenny')
 async def _lenny(self, args, message):

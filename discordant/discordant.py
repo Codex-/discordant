@@ -64,8 +64,19 @@ class Discordant(discord.Client):
                 message.content[1:])
 
             self._logger.log(logging.INFO, log_command)
-            await self.run_command(message)
-            return
+
+            try:
+                await self.run_command(message)
+                return
+            except discord.errors.Forbidden:
+                self._logger.log(logging.ERROR,
+                                 "Missing Permissions to execute command: '{}'"
+                                 .format(message.content[1:]))
+            except discord.errors.HTTPException as error:
+                self._logger.log(logging.ERROR,
+                                 "Error executing command: '{}', "
+                                 .format(message.content[1:])
+                                 + error.text)
 
         for handler_name, trigger in self._handlers.items():
             match = trigger.search(message.content)
