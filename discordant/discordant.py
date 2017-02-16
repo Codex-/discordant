@@ -55,7 +55,7 @@ class Discordant(discord.Client):
                 self._commands[cmd_name].aliases.append(alias)
 
     async def on_message(self, message):
-        if len(message.content) == 0:
+        if len(message.content) == 0 or message.author.bot:
             return
         if message.content[0] == self.command_char:
             log_command = "User: '{0}: {1}', Command: '{2}'".format(
