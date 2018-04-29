@@ -1,9 +1,11 @@
+
 from .discordant import Discordant
 from discord.embeds import Embed
 from discord.colour import Colour
+from functools import partial
+from random import randrange
 import re
 import requests
-from functools import partial
 import asyncio
 
 
@@ -89,6 +91,26 @@ async def _urban_dictionary_search(self, args, message):
 
 
 _memos = {}
+
+
+@Discordant.register_command('draw')
+async def _draw(self, args, message):
+    responses = [
+        "{} is the lucky winner!",
+        "Oof, bad luck {}",
+        "Rest in peace, {}",
+        "It's not oats, but {} will do"
+    ]
+
+    members = []
+    for member in message.server.members:
+        if member.id != message.author.id and not member.bot:
+            members.append(member)
+
+    response = responses[int(randrange(0, len(responses)))]\
+        .format(members[int(randrange(0, len(members)))].mention)
+
+    await self.send_message(message.channel, response)
 
 
 @Discordant.register_command('remember')
