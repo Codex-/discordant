@@ -64,7 +64,7 @@ async def _urban_dictionary_search(self, args, message):
         return
 
     json = res.json()
-    if json['result_type'] == 'no_results':
+    if len(json['list']) == 0:
         await self.send_message(message.channel,
                                 'No results found for "{}".'.format(args))
     else:
@@ -144,6 +144,7 @@ async def _recall(self, args, message):
 
     await self.send_message(message.channel, _memos[args])
 
+
 @Discordant.register_command('join')
 async def _join(self, args, message):
     app_info = await self.application_info()
@@ -151,6 +152,7 @@ async def _join(self, args, message):
                   "Follow: <https://discordapp.com/oauth2/authorize?"\
                   "client_id=" + app_info.id + "&scope=bot>"
     await self.send_message(message.channel, join_string)
+
 
 @Discordant.register_command('resetname')
 async def _reset(self, args, message):
@@ -160,18 +162,20 @@ async def _reset(self, args, message):
     # print(type(app_info))
     await self.change_nickname(message, '')
 
+
 @Discordant.register_command('lenny')
 async def _lenny(self, args, message):
     await self.send_message(message.channel, '( ͡° ͜ʖ ͡°)')
 
+
 @Discordant.register_command('poop')
 async def _poop(self, args, message):
     cat_poop = (".                                        /￣￣￣＼\n　　　　　　"
-               " 　　/|　　 　　 ｜\n　　　　　 　　/　| 　 | ∩　 　＼\n　　　　 　　∫"
-               "　     |      | | | ＼　　 ￣￣＼ ∧　 ∧　     ／￣￣￣￣￣￣￣￣￣￣"
-               "￣￣￣￣|\n　　　　　　　 　 | / 　| |　　＼＿＿ 　(　´ ∀｀)  < 　POO"
-               "P UPLOAD COMPLETE          )\n　　　　　　　　 / / 　| |　　　　　"
-               " /　/ / /　　  ＼＿＿＿＿＿＿＿＿＿＿＿＿＿＿|\n　　　　　 　　 / /　　"
-               "| | 　　　　（ （ / /\n　　　          　 / /　　　| | 　　　　    "
-               " ＼＼\n　       　:poop:      U　　       U 　　　         ⊂ / ∪")
+                " 　　/|　　 　　 ｜\n　　　　　 　　/　| 　 | ∩　 　＼\n　　　　 　　∫"
+                "　     |      | | | ＼　　 ￣￣＼ ∧　 ∧　     ／￣￣￣￣￣￣￣￣￣￣"
+                "￣￣￣￣|\n　　　　　　　 　 | / 　| |　　＼＿＿ 　(　´ ∀｀)  < 　POO"
+                "P UPLOAD COMPLETE          )\n　　　　　　　　 / / 　| |　　　　　"
+                " /　/ / /　　  ＼＿＿＿＿＿＿＿＿＿＿＿＿＿＿|\n　　　　　 　　 / /　　"
+                "| | 　　　　（ （ / /\n　　　          　 / /　　　| | 　　　　    "
+                " ＼＼\n　       　:poop:      U　　       U 　　　         ⊂ / ∪")
     await self.send_message(message.channel, cat_poop)
